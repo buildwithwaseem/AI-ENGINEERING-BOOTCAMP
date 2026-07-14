@@ -1,0 +1,8 @@
+#Environment
+.env
+.env copy
+.venv/
+
+#Python cache
+__pycache__/
+*.pyc
