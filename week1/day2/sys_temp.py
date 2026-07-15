@@ -13,22 +13,22 @@ client=Groq(api_key=my_api_key)
 
 model="llama-3.3-70b-versatile"
 role="user"
-prompt="Do you know Wasim Akram?"
+prompt="Suggest a name for my clothing company"
+# SYSTEM
+message_system={
+    "role": "system",
+    "content": "You are a brand manager who suggests name for my company. name should be in one word. suggest only one name for my clothing brand"
+}
 # message me role and content
 message={
     "role": role,
     "content": prompt
 }
 
-message_system={
-    "role": "system",
-    "content": "you are a brand manager who suggests names for new startups"
-}
-
 messages=[message_system, message]
-
-response=client.chat.completions.create(model=model, messages=messages)
-print(response)
+# Temperature by default is 0 meaning safe. range is [0,2]
+response=client.chat.completions.create(model=model, messages=messages, temperature=0)
+# print(response)
 
 print("#######################################")
 
