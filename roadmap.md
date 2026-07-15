@@ -471,8 +471,6 @@ Recurring visual elements: the "FREE • 8 WEEKS" badge from the intro thumbnail
 
 **Instagram bio hook:** *"Landing AI Engineer jobs since 2026. Free 8-week course → link in bio."*
 
-**Intro-video positioning:** *"I built this by reading 500+ real AI Engineer job descriptions. Not what I think you should learn — what companies are actually paying for."*
-
 **Differentiator vs Ed Donner's course:** *"Ed's course teaches you AI. This one teaches you AI plus how to talk about it in interviews, frame it on your resume, and land the offer. Built for Indian freshers and working engineers, not Western $5-API-budget hobbyists."*
 
 ---
