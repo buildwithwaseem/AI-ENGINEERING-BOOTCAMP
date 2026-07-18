@@ -74,6 +74,11 @@ The main libraries used are:
 - `pypdf`
 - `python-docx`
 
+## Profile Links
+
+- LinkedIn: https://www.linkedin.com/in/waseemakramai/
+- GitHub: https://github.com/buildwithwaseem
+
 ## Notes
 
 - The script currently uses the hardcoded model `openai/gpt-oss-120b`.
