@@ -1,72 +1,134 @@
-# React Chain Agent Demo
+# ReAct Agent Demo
 
-This folder contains a simple tool-enabled agent demo using the Groq `llama-3.3-70b-versatile` model.
+This folder introduces the idea of a ReAct-style AI agent: combining reasoning and action in a loop.
 
-## Overview
+## What is ReAct?
 
-The script `react_chain.py` implements a small agent loop that:
-- sends a system prompt describing available tools,
-- calls the LLM to decide what to do next,
-- executes exactly one tool per step,
-- returns the tool observation to the LLM,
-- repeats until the agent returns a `Final Answer:`.
+ReAct stands for:
 
-The agent is designed as a shopping assistant that can answer product pricing questions and perform basic arithmetic.
+- Reasoning: the model thinks about what it needs to do.
+- Acting: the model chooses an action, such as calling a tool.
 
-## Files
+In this demo, the agent does not directly answer everything by itself. Instead, it:
 
-- `react_chain.py` - main agent script
-- `.env` - expected to contain `GROQ_API_KEY`
-- `README.md` - this documentation
+1. Reads the user question.
+2. Decides which tool to call.
+3. Executes that tool.
+4. Receives an observation from the tool.
+5. Uses that observation to continue reasoning.
+6. Produces a final answer once the task is complete.
 
-## Tools
+This is a simple example of how an LLM can act like an agent by using external tools.
 
-The agent exposes two tools:
+## Project Goal
+
+The goal of this example is to show how a language model can:
+
+- answer a shopping question,
+- call a pricing function,
+- perform arithmetic using a calculator tool,
+- and combine the results into a final answer.
+
+## Files in This Folder
+
+- `react_chain.py` – the main ReAct agent implementation.
+- `.env` – expected to contain your `GROQ_API_KEY`.
+- `README.md` – project explanation and usage instructions.
+
+## Available Tools
+
+The agent exposes two simple tools:
 
 - `get_product_price(product)`
-  - returns a price for selected products.
-  - currently supports `iPhone 17` and `iPhone 15`.
+  - Returns a fixed product price.
+  - Currently supports `iPhone 17` and `iPhone 15`.
+
 - `calculator(expression)`
-  - evaluates a simple arithmetic expression using Python `eval()`.
+  - Evaluates a basic arithmetic expression.
+  - Example: `5000 - 1000`
+
+## How the Agent Works
+
+The script uses a loop with the following pattern:
+
+1. Build a message list with:
+   - a system prompt describing the tools,
+   - the user's question.
+2. Send the prompt to the Groq model.
+3. Read the model response.
+4. If the model outputs an `Action:` line, run the matching tool.
+5. Send the tool result back to the model as an `Observation:`.
+6. Repeat until the model returns `Final Answer:`.
+
+This is the core idea behind ReAct-style agents:
+
+- the model reasons,
+- chooses an action,
+- observes the outcome,
+- and continues.
+
+## Example Prompt
+
+The script currently uses a prompt like this:
+
+> I have 5000 rupees. What is the price of an iphone 17? and how much money will I have left?
+
+The agent should:
+
+1. Look up the product price.
+2. Subtract that price from 5000.
+3. Return the final answer.
 
 ## Setup
 
-1. Install dependencies:
-   ```powershell
-   pip install python-dotenv groq
-   ```
-2. Add your API key to a `.env` file:
-   ```text
-   GROQ_API_KEY=your_api_key_here
-   ```
+1. Install the required Python packages:
 
-## Run
+```powershell
+pip install python-dotenv groq
+```
 
-Execute the script from `week2/day7`:
+2. Create a `.env` file in this folder with your Groq API key:
+
+```text
+GROQ_API_KEY=your_api_key_here
+```
+
+## Run the Demo
+
+From the `week2/day7` folder, run:
 
 ```powershell
 python react_chain.py
 ```
 
-The default prompt asks:
+## Important Notes
 
-- "I have 5000 rupees. What is the price of an iphone 17?"
-- "and how much money will I have left?"
+- The agent is designed to use exact action syntax, for example:
 
-## How it works
+```text
+Action: get_product_price("iPhone 17")
+Action: calculator("5000 - 1000")
+```
 
-1. The script loads the Groq API key from `.env`.
-2. It initializes the LLM client and builds a system prompt describing the tools.
-3. It sends the user question to the model.
-4. For each step, it reads the model response:
-   - if the model returns an `Action: ...`, the script runs the tool,
-   - appends the observation back into the conversation,
-   - continues until the model returns `Final Answer:`.
+- The code currently limits the agent to 5 reasoning-action steps.
+- The calculator uses Python `eval()`, so it should only be used with trusted input.
 
-## Notes
+## Learning Outcome
 
-- The prompt requires exact tool syntax, for example:
-  - `Action: get_product_price("iPhone 17")`
-  - `Action: calculator("5000 - 1000")`
-- The current implementation limits the agent to 5 steps.
-- `calculator()` uses `eval()`, so only trusted inputs should be used in real applications.
+By the end of this example, you should understand:
+
+- what a ReAct agent is,
+- how tool calling works,
+- how the model can move through multiple reasoning-action steps,
+- and how simple agent loops can be built with an LLM and external functions.
+
+## Next Step
+
+A natural next improvement would be to add more tools such as:
+
+- product search,
+- inventory lookup,
+- order summary,
+- or a more secure calculator implementation.
+
+That would make the agent more realistic and capable of handling more complex tasks.
