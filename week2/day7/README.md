@@ -131,4 +131,4 @@ A natural next improvement would be to add more tools such as:
 - order summary,
 - or a more secure calculator implementation.
 
-That would make the agent more realistic and capable of handling more complex tasks.
+That would make the agent more realistic and capable of handling more complex task.
